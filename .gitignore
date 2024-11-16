@@ -1,0 +1,13 @@
+# Ignorer les fichiers de l'environnement Python
+*.pyc
+__pycache__/
+
+# Ignorer les fichiers de configuration IDE
+.idea/
+.vscode/
+
+# Ignorer les fichiers de log
+*.log
+
+# Ignorer les fichiers temporaires
+*.swp
