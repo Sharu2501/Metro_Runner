@@ -146,10 +146,10 @@ def compute_acpm(graph):
 # Visualisation graphique
 # -------------------------------
 LINE_COLORS = {
-    "1": "blue", "2": "green", "3": "red", "4": "purple", "5": "orange",
+    "1": "blue", "2": "green", "3": "red","3bis": "olive", "4": "purple", "5": "orange",
     "6": "pink", "7": "brown", "7bis": "lightblue", "8": "yellow",
     "9": "cyan", "10": "lime", "11": "gray", "12": "gold",
-    "13": "darkblue", "14": "darkred", "3bis": "olive"
+    "13": "darkblue", "14": "darkred"
 }
 
 def plot_metro(graph, stations, positions, path=None, title="Carte du métro"):
@@ -212,8 +212,8 @@ def plot_metro(graph, stations, positions, path=None, title="Carte du métro"):
 # -------------------------------
 # Interface utilisateur
 # -------------------------------
-st.title("Vas-y dans le métro : Carte interactive")
-st.sidebar.title("Options")
+st.title("Vas-y dans le métro : Metro Surfer")
+st.sidebar.title("Me déplacer")
 
 # Charger les données
 stations, terminus = load_stations('station.txt')
@@ -226,13 +226,6 @@ station_names = {id: info['station_name'] for id, info in stations.items()}
 
 # Enlever les doublons dans la liste des stations
 unique_station_names = list(set(station_names.values()))
-
-# Affichage de la légende des lignes
-st.sidebar.subheader("Légende des lignes")
-for line_number, color in LINE_COLORS.items():
-    st.sidebar.markdown(f"**Ligne {line_number}**")
-    st.sidebar.markdown(f"<div style='width: 20px; height: 20px; background-color: {color}; display: inline-block;'></div>", unsafe_allow_html=True)
-    st.sidebar.markdown(f"    **{line_number}**")
 
 # Sélection des stations de départ et d'arrivée
 start_station_name = st.sidebar.selectbox("Station de départ", unique_station_names)
@@ -266,3 +259,13 @@ if st.sidebar.button("Afficher l'ACPM de tout le graphe"):
     acpm = nx.minimum_spanning_tree(metro_graph, weight='weight')  # Calcul de l'ACPM
     fig_acpm = plot_metro(acpm, stations, positions, title="Arbre Couvrant de Poids Minimum (ACPM)")
     st.plotly_chart(fig_acpm)
+
+# Affichage de la légende des lignes
+st.sidebar.subheader("Légende des lignes")
+for line_number, color in LINE_COLORS.items():
+    st.sidebar.markdown(
+        f"<div style='display: inline-block; margin-right: 10px;'>"
+        f"<div style='width: 20px; height: 20px; background-color: {color}; display: inline-block;'></div>"
+        f"</div><span style='vertical-align: top; margin-left: 10px;'>Ligne {line_number}</span>",
+        unsafe_allow_html=True
+    )
