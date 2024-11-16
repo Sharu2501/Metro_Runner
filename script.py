@@ -2,6 +2,17 @@ import networkx as nx
 import streamlit as st
 import plotly.graph_objects as go
 
+st.set_page_config(
+    page_title="Vas-y dans le métro",
+    page_icon="MetroSurfer.png"
+)
+
+with open('styles.css', 'r', encoding='utf-8') as f:
+    css_content = f.read()
+
+st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+
+
 # -------------------------------
 # Chargement des données
 # -------------------------------
