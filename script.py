@@ -3,15 +3,9 @@ import streamlit as st
 import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title="Vas-y dans le métro",
+    page_title="Metro Surfer",
     page_icon="MetroSurfer.png"
 )
-
-with open('styles.css', 'r', encoding='utf-8') as f:
-    css_content = f.read()
-
-st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
-
 
 # -------------------------------
 # Chargement des données
@@ -73,7 +67,7 @@ def load_edges(file_path):
 
 def load_positions(file_path):
     """Charge les coordonnées des stations depuis pospoints.txt et applique un facteur d'agrandissement."""
-    scale_factor = 4  # Augmenter pour espacer davantage les stations
+    scale_factor = 5
     positions = {}
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
@@ -87,13 +81,32 @@ def load_positions(file_path):
 # -------------------------------
 import networkx as nx
 
-def check_connectivity(graph):
-    """Vérifie si le graphe est connexe."""
-    return nx.is_connected(graph)
+def verifie_connexite(graph):
+    """Vérifie si le graphe est connexe en utilisant le parcours en profondeur."""
+    if not graph.nodes:
+        return True  # Un graphe sans nœuds est connexe
+
+    # On commence la recherche en profondeur à partir d'un nœud arbitraire
+    start_node = next(iter(graph.nodes))
+
+    # Utilisation de DFS pour parcourir tous les nœuds accessibles
+    visited = set()
+
+    def dfs(node):
+        visited.add(node)
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited:
+                dfs(neighbor)
+
+    # Lancer DFS depuis le premier nœud
+    dfs(start_node)
+
+    # Si tous les nœuds ont été visités, le graphe est connexe
+    return len(visited) == len(graph.nodes)
 
 def add_missing_edges(graph, stations, edges):
     """Ajoute des arêtes pour rendre le graphe connexe si nécessaire."""
-    if check_connectivity(graph):
+    if verifie_connexite(graph):
         return graph
 
     # Si le graphe n'est pas connexe, ajouter des arêtes manquantes
@@ -116,11 +129,45 @@ def build_graph(stations, edges):
 
 def bellman_ford(graph, source, target):
     """Calcule le plus court chemin entre source et target avec l'algorithme de Bellman-Ford."""
-    try:
-        length, path = nx.single_source_bellman_ford(graph, source, target)
-        return length, path
-    except nx.NetworkXNoPath:
-        return None, None  # Pas de chemin possible
+    # Initialisation des distances
+    distances = {node: float('inf') for node in graph.nodes}
+    distances[source] = 0  # Distance du nœud source à lui-même est 0
+    predecessors = {node: None for node in graph.nodes}  # Pour reconstruire le chemin
+
+    # Étape 1 : Relaxation des arêtes, V-1 fois (V est le nombre de nœuds)
+    for _ in range(len(graph.nodes) - 1):
+        for u, v, data in graph.edges(data=True):
+            weight = data['weight']  # Poids de l'arête
+            if distances[u] + weight < distances[v]:
+                distances[v] = distances[u] + weight
+                predecessors[v] = u
+            if distances[v] + weight < distances[u]:
+                distances[u] = distances[v] + weight
+                predecessors[u] = v
+
+    # Vérification des cycles de poids négatifs
+    for u, v, data in graph.edges(data=True):
+        weight = data['weight']
+        if distances[u] + weight < distances[v]:
+            raise ValueError("Le graphe contient un cycle de poids négatif")
+        if distances[v] + weight < distances[u]:
+            raise ValueError("Le graphe contient un cycle de poids négatif")
+
+    # Étape 2 : Reconstruction du chemin le plus court
+    path = []
+    current_node = target
+    while current_node is not None:
+        path.append(current_node)
+        current_node = predecessors[current_node]
+
+    path.reverse()  # Inverser le chemin pour obtenir la direction correcte
+
+    # Si la distance au nœud cible est infinie, il n'y a pas de chemin
+    if distances[target] == float('inf'):
+        return None, None
+
+    return distances[target], path
+
 
 def display_route_info(path, stations, terminus):
     """Affiche les instructions pour l'itinéraire calculé en ne mentionnant que les changements de ligne avec le terminus."""
@@ -136,21 +183,16 @@ def display_route_info(path, stations, terminus):
         if previous_line != line_number:
             # On cherche le terminus en fonction du branchement
             if direction_number == 0:
-                route_instructions.append(f"Changement de ligne à la ligne {line_number}, direction {terminus[line_number][1]}")
+                route_instructions.append(f"Changez de ligne et prenez la {line_number}, direction {terminus[line_number][1]}")
             elif direction_number == 1:
-                route_instructions.append(f"Changement de ligne à la ligne {line_number}, direction {terminus[line_number][0]}")
+                route_instructions.append(f"Changez de ligne et prenez la {line_number}, direction {terminus[line_number][0]}")
             else:
-                route_instructions.append(f"Changement de ligne à la ligne {line_number}, direction {terminus[line_number][1]}")
+                route_instructions.append(f"Changez de ligne et prenez la {line_number}, direction {terminus[line_number][1]}")
 
         previous_line = line_number
         previous_direction = direction_number
 
     return "\n".join(route_instructions)
-
-def compute_acpm(graph):
-    """Extrait l'ACPM avec l'algorithme de Prim."""
-    acpm = nx.minimum_spanning_tree(graph)
-    return acpm
 
 
 # -------------------------------
@@ -165,13 +207,14 @@ LINE_COLORS = {
 
 def plot_metro(graph, stations, positions, path=None, title="Carte du métro"):
     """
-    Affiche une carte interactive avec Plotly.
+    Affiche une carte interactive avec Plotly, avec un zoom autour du chemin rouge si donné.
 
     Args:
         graph (nx.Graph): Le graphe du métro.
         stations (dict): Dictionnaire des stations.
         positions (dict): Coordonnées des stations.
         path (list, optional): Chemin le plus court (liste des nœuds). Default: None.
+        title (str): Le titre de la carte.
     """
     fig = go.Figure()
 
@@ -199,31 +242,56 @@ def plot_metro(graph, stations, positions, path=None, title="Carte du métro"):
 
     # Ajouter le chemin le plus court
     if path:
+        # Calculer les coordonnées du chemin
+        path_x = []
+        path_y = []
         for i in range(len(path) - 1):
             u, v = path[i], path[i + 1]
             x_coords = [positions[stations[u]['station_name']][0], positions[stations[v]['station_name']][0]]
             y_coords = [positions[stations[u]['station_name']][1], positions[stations[v]['station_name']][1]]
+            path_x.extend(x_coords)
+            path_y.extend(y_coords)
             fig.add_trace(go.Scatter(
                 x=x_coords, y=y_coords, mode='lines',
                 line=dict(color='red', width=3), hoverinfo='none'
             ))
 
-    # Configurer la disposition
-    fig.update_layout(
-        title=title,
-        xaxis=dict(visible=False),
-        yaxis=dict(visible=False),
-        showlegend=False,
-        autosize=True,  # Permet de redimensionner la carte si nécessaire
-        margin=dict(l=0, r=0, b=0, t=0),  # Éviter les marges inutiles
-    )
+        # Ajuster les limites de la carte autour du chemin
+        x_min, x_max = min(path_x), max(path_x)
+        y_min, y_max = min(path_y), max(path_y)
+
+        # Ajouter un petit padding autour du chemin
+        padding_factor = 0.1  # 10% de marge autour du chemin
+        x_range = [x_min - (x_max - x_min) * padding_factor, x_max + (x_max - x_min) * padding_factor]
+        y_range = [y_min - (y_max - y_min) * padding_factor, y_max + (y_max - y_min) * padding_factor]
+
+        # Appliquer les limites de zoom
+        fig.update_layout(
+            title=title,
+            xaxis=dict(range=x_range, visible=False),
+            yaxis=dict(range=y_range, visible=False),
+            showlegend=False,
+            autosize=True,
+            margin=dict(l=0, r=0, b=0, t=0),
+        )
+    else:
+        # Si aucun chemin, afficher la carte entière
+        fig.update_layout(
+            title=title,
+            xaxis=dict(visible=False),
+            yaxis=dict(visible=False),
+            showlegend=False,
+            autosize=True,
+            margin=dict(l=0, r=0, b=0, t=0),
+        )
+
     return fig
 
 
 # -------------------------------
 # Interface utilisateur
 # -------------------------------
-st.title("Vas-y dans le métro : Metro Surfer")
+st.title("Metro Surfer :  Votre guide interactif du métro")
 st.sidebar.title("Me déplacer")
 
 # Charger les données
@@ -267,8 +335,15 @@ if st.sidebar.button("Calculer le plus court chemin"):
 
 # Calcul et affichage de l'ACPM pour tout le graphe
 if st.sidebar.button("Afficher l'ACPM de tout le graphe"):
-    acpm = nx.minimum_spanning_tree(metro_graph, weight='weight')  # Calcul de l'ACPM
+    acpm = nx.minimum_spanning_tree(metro_graph, weight='weight')
     fig_acpm = plot_metro(acpm, stations, positions, title="Arbre Couvrant de Poids Minimum (ACPM)")
+    fig_acpm.update_layout(
+        height=500,
+        autosize=False,
+        width=1500,
+        title="Arbre Couvrant de Poids Minimum (ACPM)"
+    )
+
     st.plotly_chart(fig_acpm)
 
 # Affichage de la légende des lignes
