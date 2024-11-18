@@ -1,4 +1,6 @@
 import plotly.graph_objects as go
+import streamlit as st
+import base64
 
 LIGNE_COULEURS = {
     "1": "blue", "2": "green", "3": "red", "4": "violet", "5": "orange", "6": "pink",
@@ -132,3 +134,62 @@ def affiche_route_info(chemin, stations, terminus):
     route_instructions.append(f"Descendez à {last_station['station_nom']}.")
 
     return "\n".join(route_instructions)
+
+def set_bg_hack_url(image_path):
+    '''
+    A function to unpack an image from url and set as bg.
+    Returns
+    -------
+    The background.
+    '''
+
+    # Open the image file in binary mode
+    with open(image_path, "rb") as img_file:
+        img_data = img_file.read()
+
+    # Encode the image in base64
+    img_base64 = base64.b64encode(img_data).decode()
+
+    # Create the image URL in data URI format
+    img_url = f"data:image/png;base64,{img_base64}"
+
+    # Use markdown to set the background style
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background: url("{img_url}");
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+def sidebar_bg(side_bg):
+    """
+    Set the background image of the sidebar by reading the image,
+    converting it into base64 and applying it as the background.
+    """
+    # Get the image in base64 format
+    with open(side_bg, "rb") as img_file:
+        img_data = img_file.read()
+
+    img_base64 = base64.b64encode(img_data).decode()
+
+    # Apply the image as the sidebar background
+    st.markdown(
+        f"""
+        <style>
+        [data-testid="stSidebar"] > div:first-child {{
+            background: url(data:image/png;base64,{img_base64});
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )

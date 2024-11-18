@@ -1,13 +1,14 @@
 import streamlit as st
 from utils.algorithmes import bellman_ford, prim
 from utils.chargement_donnees import recup_stations, recup_laisons, recup_positions
-from utils.visualisation import plot_metro, affiche_route_info
+from utils.visualisation import plot_metro, affiche_route_info, sidebar_bg
 from utils.algorithmes import verifie_connexite, ajoute_liaisons_manquantes
 from utils.algorithmes import construire_graphe, format_temps
 from utils.visualisation import LIGNE_COULEURS;
+from utils.visualisation import set_bg_hack_url;
 import networkx as nx
 
-st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png")
+st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png", layout="wide")
 
 # -------------------------------
 # Chargement des données
@@ -24,23 +25,12 @@ ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
 # -------------------------------
 # Interface utilisateur
 # -------------------------------
+set_bg_hack_url("images/MetroSurfer.png")
+sidebar_bg("images/MetroSurfer.png")
+#st.image('images/MetroSurfer.png',  use_container_width=True)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
-# Set background image
-background_image_url = "url('images/MetroSurfer.png')"  # Replace this with the link to your image
-st.markdown(
-    f"""
-    <style>
-    .reportview-container {{
-        background: url({background_image_url});
-        background-size: cover;
-        background-position: center;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
 

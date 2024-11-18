@@ -1,10 +1,4 @@
-[server]
-headless = true
-enableCORS = false
-enableWebsocketCompression = false
-
 [theme]
-wideMode = true
 primaryColor = "#774BFF"
 backgroundColor = "#0E1117"
 textColor = "#FAFAFA"
