@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(
     page_title="Metro Surfer",
-    page_icon="MetroSurfer.png"
+    page_icon="data/MetroSurfer.png"
 )
 
 # -------------------------------
@@ -295,9 +295,9 @@ st.title("Metro Surfer :  Votre guide interactif du métro")
 st.sidebar.title("Me déplacer")
 
 # Charger les données
-stations, terminus = recup_stations('station.txt')
-liaisons = recup_laisons('arete.txt')
-positions = recup_positions('pospoints.txt')
+stations, terminus = recup_stations('data/station.txt')
+liaisons = recup_laisons('data/liaison.txt')
+positions = recup_positions('data/pospoints.txt')
 metro_graphe = construire_graphe(stations, liaisons)
 
 # Créer le dictionnaire des noms
