@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(
     page_title="Metro Surfer",
-    page_icon="data/MetroSurfer.png"
+    page_icon="images/MetroSurfer.png"
 )
 
 # -------------------------------
@@ -167,7 +167,41 @@ def bellman_ford(graphe, depart, arrivee):
 
     return distances[arrivee], chemin
 
+def prim(graphe):
+    """
+    Implémente l'algorithme de Prim pour calculer l'ACPM.
+    Args:
+        graphe (nx.Graph): Graphe non orienté avec des poids sur les arêtes.
+    Returns:
+        nx.Graph: L'arbre couvrant de poids minimum.
+    """
+    from heapq import heappop, heappush
 
+    acpm = nx.Graph()  # Graphe pour stocker l'ACPM
+    visites = set()  # Ensemble des nœuds visités
+    liaisons = []  # Min-heap pour gérer les arêtes
+
+    # Choisir un nœud de départ
+    start_node = next(iter(graphe.nodes))
+    visites.add(start_node)
+
+    # Ajouter les arêtes du nœud de départ dans le tas
+    for neighbor, attributes in graphe[start_node].items():
+        heappush(liaisons, (attributes['weight'], start_node, neighbor))
+
+    while liaisons:
+        weight, x, y = heappop(liaisons)  # Extraire l'arête de poids minimum
+        if y not in visites:
+            # Ajouter l'arête à l'ACPM
+            acpm.add_edge(x, y, weight=weight)
+            visites.add(y)
+
+            # Ajouter les nouvelles arêtes accessibles depuis y
+            for neighbor, attributes in graphe[y].items():
+                if neighbor not in visites:
+                    heappush(liaisons, (attributes['weight'], y, neighbor))
+
+    return acpm
 
 def display_route_info(chemin, stations, terminus):
     """Affiche les instructions pour l'itinéraire calculé en ne mentionnant que les changements de ligne avec le terminus."""
@@ -287,6 +321,12 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
 
     return fig
 
+def format_temps(minutes_float):
+    """Convertit un temps en minutes (float) au format minutes:secondes."""
+    minutes = int(minutes_float)
+    secondes = round((minutes_float - minutes) * 60)
+    return f"{minutes} min {secondes} sec"
+
 
 # -------------------------------
 # Interface utilisateur
@@ -304,46 +344,65 @@ metro_graphe = construire_graphe(stations, liaisons)
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
 
 # Enlever les doublons dans la liste des stations
-station_unique = list(set(station_noms.values()))
-
+station_unique = ["Aucune sélection"] + list(set(station_noms.values()))
 # Sélection des stations de départ et d'arrivée
 depart_station_nom = st.sidebar.selectbox("Station de départ", station_unique)
 arrivee_station_nom = st.sidebar.selectbox("Station d’arrivée", station_unique)
 
-# Valider les indices
-try:
-    deb_station = [id for id, name in station_noms.items() if name == depart_station_nom][0]
-    fin_station = [id for id, name in station_noms.items() if name == arrivee_station_nom][0]
-except IndexError:
-    st.error("Station non trouvée. Veuillez vérifier les données.")
+# Vérifier que les stations sont différentes
+if depart_station_nom == "Aucune sélection" or arrivee_station_nom == "Aucune sélection":
+    st.error("Veuillez sélectionner une station de départ et une station d’arrivée.")
+elif depart_station_nom == arrivee_station_nom:
+    st.error("La station de départ doit être différente de la station d’arrivée.")
+else:
+    try:
+        deb_station = [id for id, name in station_noms.items() if name == depart_station_nom][0]
+        fin_station = [id for id, name in station_noms.items() if name == arrivee_station_nom][0]
+    except IndexError:
+        st.error("Station non trouvée. Veuillez vérifier les données.")
 
-# Calcul du plus court chemin
-if st.sidebar.button("Calculer le plus court chemin"):
-    temps, chemin = bellman_ford(metro_graphe, deb_station, fin_station)
-    if chemin:
-        st.write(f"Durée estimée : {temps:.2f} minutes")
-        route_info = display_route_info(chemin, stations, terminus)
-        st.write(route_info)
+    # Calcul du plus court chemin
+    if st.sidebar.button("Calculer le plus court chemin"):
+        temps, chemin = bellman_ford(metro_graphe, deb_station, fin_station)
+        if chemin:
+            # Formatage du temps
+            temps_formatte = format_temps(temps)
+            st.write(f"Durée estimée : {temps_formatte}")
+            route_info = display_route_info(chemin, stations, terminus)
+            st.write(route_info)
 
-        # Affichage du trajet sur la carte interactive
-        fig = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
-        st.plotly_chart(fig)
-    else:
-        st.write("Aucun chemin trouvé entre les stations.")
+            # Affichage du trajet sur la carte interactive
+            fig = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
+            st.plotly_chart(fig)
+        else:
+            st.write("Aucun chemin trouvé entre les stations.")
+
 
 
 # Calcul et affichage de l'ACPM pour tout le graphe
-if st.sidebar.button("Afficher l'ACPM de tout le graphe"):
-    acpm = nx.minimum_spanning_tree(metro_graphe, weight='temps')
-    fig_acpm = plot_metro(acpm, stations, positions, titre="Arbre Couvrant de Poids Minimum (ACPM)")
-    fig_acpm.update_layout(
+if st.sidebar.button("Afficher l'ACPM"):
+    acpm_prim = prim(metro_graphe)
+    fig_acpm_prim = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
+    fig_acpm_prim.update_layout(
         height=500,
         autosize=False,
         width=1500,
-        title="Arbre Couvrant de Poids Minimum (ACPM)"
     )
+    st.plotly_chart(fig_acpm_prim)
 
-    st.plotly_chart(fig_acpm)
+acpm_methode = st.sidebar.radio(
+    "Choisissez l'algorithme pour l'ACPM :",
+    options=["Prim", "NetworkX"]
+)
+
+if acpm_methode == "Prim":
+    acpm_prim = prim(metro_graphe)
+    fig_acpm_prim = plot_metro(acpm_prim, stations, positions, titre="ACPM avec Prim")
+    st.plotly_chart(fig_acpm_prim)
+else:
+    acpm_networkx = nx.minimum_spanning_tree(metro_graphe, weight='weight')
+    fig_acpm_networkx = plot_metro(acpm_networkx, stations, positions, titre="ACPM avec Kruskal")
+    st.plotly_chart(fig_acpm_networkx)
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
