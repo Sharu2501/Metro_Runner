@@ -168,6 +168,7 @@ def set_bg_hack_url(image_path):
         unsafe_allow_html=True
     )
 
+
 def sidebar_bg(side_bg):
     """
     Set the background image of the sidebar by reading the image,
@@ -185,6 +186,32 @@ def sidebar_bg(side_bg):
         <style>
         [data-testid="stSidebar"] > div:first-child {{
             background: url(data:image/png;base64,{img_base64});
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+def gif_bg(gif_bg):
+    """
+    Set the background image of the sidebar using a GIF file,
+    converting it into Base64 and applying it as the background.
+    """
+    gif_bg_ext = 'gif'  # File extension for GIF images
+
+    # Open the GIF image in binary mode and encode it as base64
+    with open(gif_bg, "rb") as img_file:
+        img_data = img_file.read()
+
+    img_base64 = base64.b64encode(img_data).decode()
+
+    st.markdown(
+        f"""
+        <style>
+        [data-testid="stSidebar"] > div:first-child {{
+            background: url(data:image/{gif_bg_ext};base64,{img_base64});
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;

@@ -6,6 +6,7 @@ from utils.algorithmes import verifie_connexite, ajoute_liaisons_manquantes
 from utils.algorithmes import construire_graphe, format_temps
 from utils.visualisation import LIGNE_COULEURS;
 from utils.visualisation import set_bg_hack_url;
+from utils.visualisation import gif_bg;
 import networkx as nx
 
 st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png", layout="wide")
@@ -27,6 +28,7 @@ ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
 # -------------------------------
 set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
+
 #st.image('images/MetroSurfer.png',  use_container_width=True)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
@@ -99,3 +101,5 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
         f"</div><span style='vertical-align: top; margin-left: 10px;'>Ligne {ligne_numero}</span>",
         unsafe_allow_html=True
     )
+
+#gif_bg("images/metro.gif")
