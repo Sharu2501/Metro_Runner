@@ -27,6 +27,20 @@ ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
+# Set background image
+background_image_url = "url('images/MetroSurfer.png')"  # Replace this with the link to your image
+st.markdown(
+    f"""
+    <style>
+    .reportview-container {{
+        background: url({background_image_url});
+        background-size: cover;
+        background-position: center;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
 
