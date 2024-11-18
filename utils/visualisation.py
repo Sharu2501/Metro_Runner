@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 
-LIGNE_COULEURD = {
+LIGNE_COULEURS = {
     "1": "blue", "2": "green", "3": "red", "4": "violet", "5": "orange", "6": "pink",
     "7": "brown", "8": "yellow", "9": "cyan", "10": "lime", "11": "gray", "12": "gold",
     "13": "darkblue", "14": "darkred"
@@ -32,7 +32,7 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
     for station_id, data in stations.items():
         if data['station_nom'] in positions:
             x, y = positions[data['station_nom']]
-            line_color = LINE_COLORS.get(data['ligne_numero'], "black")  # Couleur par ligne
+            line_color = LIGNE_COULEURS.get(data['ligne_numero'], "black")  # Couleur par ligne
             fig.add_trace(go.Scatter(
                 x=[x], y=[y], mode='markers+text',
                 text=[data['station_nom']],

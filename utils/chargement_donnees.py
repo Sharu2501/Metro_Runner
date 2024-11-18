@@ -41,7 +41,6 @@ def recup_stations(chemin_fichier):
     return stations, terminus
 
 
-
 def recup_laisons(chemin_fichier):
     """Charge les arêtes (connexions) depuis un fichier formaté en une liste."""
     laisons = []

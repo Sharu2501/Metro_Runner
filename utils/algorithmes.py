@@ -30,7 +30,7 @@ def ajoute_liaisons_manquantes(graphe, stations, liaisons):
 
     # Si le graphe n'est pas connexe, on ajoute des arêtes manquantes
     # On peut ajouter des arêtes entre stations non connectées
-    # Exemple : on ajouter une arête entre des stations choisies pour rendre le graphe connexe
+    # Exemple : on ajoute une arête entre des stations choisies pour rendre le graphe connexe
     for x in stations:
         for y in stations:
             if not graphe.has_edge(x, y):
@@ -124,7 +124,7 @@ def prim(graphe):
     return acpm
 
 def format_temps(minutes_float):
-    """Convertit un temps en minutes (float) au format minutes:secondes."""
+    """Convertis un temps en minutes (float) au format minutes:secondes."""
     minutes = int(minutes_float)
     secondes = round((minutes_float - minutes) * 60)
     return f"{minutes} min {secondes} sec"

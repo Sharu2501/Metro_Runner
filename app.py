@@ -4,7 +4,7 @@ from utils.chargement_donnees import recup_stations, recup_laisons, recup_positi
 from utils.visualisation import plot_metro, affiche_route_info
 from utils.algorithmes import verifie_connexite, ajoute_liaisons_manquantes
 from utils.algorithmes import construire_graphe, format_temps
-from utils.visualisation import LIGNE_COULEURD;
+from utils.visualisation import LIGNE_COULEURS;
 import networkx as nx
 
 st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png")
@@ -17,12 +17,15 @@ liaisons = recup_laisons('data/liaison.txt')
 positions = recup_positions('data/pospoints.txt')
 
 # Construction du graphe
-metro_graphe = construire_graphe(stations, liaisons)# -------------------------------
+metro_graphe = construire_graphe(stations, liaisons)
+verifie_connexite(metro_graphe)
+ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
+
+# -------------------------------
 # Interface utilisateur
 # -------------------------------
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
-
 
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
@@ -42,12 +45,6 @@ with st.sidebar:
     # Composants de sélection
     depart_station_nom = st.selectbox("Station de départ", station_unique, key="depart_station")
     arrivee_station_nom = st.selectbox("Station d’arrivée", station_unique, key="arrivee_station")
-
-    # Bouton pour inverser les stations
-    if st.button("🔄 Inverser"):
-        # Inverser les stations dans session_state
-        st.session_state.depart_station, st.session_state.arrivee_station = st.session_state.arrivee_station, st.session_state.depart_station
-
 
 # Vérifier que les stations sont différentes
 if depart_station_nom == "Aucune sélection" or arrivee_station_nom == "Aucune sélection":
@@ -89,23 +86,9 @@ if st.sidebar.button("Afficher l'ACPM"):
     )
     st.plotly_chart(fig_acpm_prim)
 
-acpm_methode = st.sidebar.radio(
-    "Choisissez l'algorithme pour l'ACPM :",
-    options=["Prim", "NetworkX"]
-)
-
-if acpm_methode == "Prim":
-    acpm_prim = prim(metro_graphe)
-    fig_acpm_prim = plot_metro(acpm_prim, stations, positions, titre="ACPM avec Prim")
-    st.plotly_chart(fig_acpm_prim)
-else:
-    acpm_networkx = nx.minimum_spanning_tree(metro_graphe, weight='weight')
-    fig_acpm_networkx = plot_metro(acpm_networkx, stations, positions, titre="ACPM avec Kruskal")
-    st.plotly_chart(fig_acpm_networkx)
-
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
-for ligne_numero, couleur in LIGNE_COULEURD.items():
+for ligne_numero, couleur in LIGNE_COULEURS.items():
     st.sidebar.markdown(
         f"<div style='display: inline-block; margin-right: 10px;'>"
         f"<div style='width: 20px; height: 20px; background-color: {couleur}; display: inline-block;'></div>"
