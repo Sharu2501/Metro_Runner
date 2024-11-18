@@ -11,14 +11,14 @@ def verifie_connexite(graphe):
     # Utilisation du parcours en profondeur pour parcourir tous les nœuds accessibles
     visites = set()
 
-    def dfs(node):
+    def parcours_profondeur(node):
         visites.add(node)
         for voisin in graphe.neighbors(node):
             if voisin not in visites:
-                dfs(voisin)
+                parcours_profondeur(voisin)
 
     # Faire le parcours en profondeur depuis le premier nœud
-    dfs(depart_node)
+    parcours_profondeur(depart_node)
 
     # Si tous les nœuds ont été visités, le graphe est connexe
     return len(visites) == len(graphe.nodes)
@@ -34,7 +34,7 @@ def ajoute_liaisons_manquantes(graphe, stations, liaisons):
     for x in stations:
         for y in stations:
             if not graphe.has_edge(x, y):
-                graphe.add_edge(x, y, weight=20)  # Ajout d'une arête avec un temps de 20s
+                graphe.add_edge(x, y, weight=20)  # ajoute une arête avec un temps de 20s
     return graphe
 
 def construire_graphe(stations, liaisons):

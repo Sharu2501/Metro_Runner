@@ -99,33 +99,33 @@ def affiche_route_info(chemin, stations, terminus):
 
     for i in range(len(chemin) - 1):
         # Station actuelle et suivante
-        current_station_id = chemin[i]
-        next_station_id = chemin[i + 1]
-        current_station = stations[current_station_id]
-        next_station = stations[next_station_id]
+        station_actuelle_id = chemin[i]
+        station_suivante_id = chemin[i + 1]
+        station_actuelle = stations[station_actuelle_id]
+        station_suivante = stations[station_suivante_id]
 
-        current_line = current_station['ligne_numero']
+        ligne_actuelle = station_actuelle['ligne_numero']
 
-        if ligne_precedente != current_line:
+        if ligne_precedente != ligne_actuelle:
             # Changement de ligne, déterminer le terminus basé sur le sens du déplacement
-            ligne_terminus = terminus[current_line]
-            current_name = current_station['station_nom']
-            next_name = next_station['station_nom']
+            ligne_terminus = terminus[ligne_actuelle]
+            nom_actuel = station_actuelle['station_nom']
+            nom_suivant = station_suivante['station_nom']
 
             # Si le terminus de la ligne existe, choisir celui vers lequel on se dirige
-            if next_name in ligne_terminus:
-                terminus_direction = next_name
+            if nom_suivant in ligne_terminus:
+                terminus_direction = nom_suivant
             else:
                 # Sinon, choisir l'autre terminus comme direction
                 terminus_direction = (
-                    ligne_terminus[1] if ligne_terminus[0] == current_name else ligne_terminus[0]
+                    ligne_terminus[1] if ligne_terminus[0] == nom_actuel else ligne_terminus[0]
                 )
 
             route_instructions.append(
-                f"Prenez la ligne {current_line}, direction {terminus_direction}."
+                f"A {nom_actuel}, prenez la ligne {ligne_actuelle}, direction {terminus_direction}."
             )
 
-        ligne_precedente = current_line
+        ligne_precedente = ligne_actuelle
 
     # Ajouter la dernière station
     last_station = stations[chemin[-1]]
