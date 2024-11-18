@@ -110,7 +110,7 @@ def ajoute_liaisons_manquantes(graphe, stations, liaisons):
 
     # Si le graphe n'est pas connexe, on ajoute des arêtes manquantes
     # On peut ajouter des arêtes entre stations non connectées
-    # Exemple : on ajouter une arête entre des stations choisies pour rendre le graphe connexe
+    # Exemple : on ajoute une arête entre des stations choisies pour rendre le graphe connexe
     for x in stations:
         for y in stations:
             if not graphe.has_edge(x, y):
@@ -204,36 +204,57 @@ def prim(graphe):
     return acpm
 
 def display_route_info(chemin, stations, terminus):
-    """Affiche les instructions pour l'itinéraire calculé en ne mentionnant que les changements de ligne avec le terminus."""
+    """
+    Affiche les instructions pour l'itinéraire calculé en mentionnant les changements de ligne
+    avec le terminus basé sur le sens du trajet.
+    """
     route_instructions = []
     ligne_precedente = None
-    direction_precedente = None
+    terminus_direction = None
 
-    for station_id in chemin:
-        station = stations[station_id]
-        ligne_numero = station['ligne_numero']
-        direction_numero = station['direction_numero']
+    for i in range(len(chemin) - 1):
+        # Station actuelle et suivante
+        current_station_id = chemin[i]
+        next_station_id = chemin[i + 1]
+        current_station = stations[current_station_id]
+        next_station = stations[next_station_id]
 
-        if ligne_precedente != ligne_numero:
-            # On cherche le terminus en fonction du branchement
-            if direction_numero == 0:
-                route_instructions.append(f"Changez de ligne et prenez la {ligne_numero}, direction {terminus[ligne_numero][1]}.")
-            elif direction_numero == 1:
-                route_instructions.append(f"Changez de ligne et prenez la {ligne_numero}, direction {terminus[ligne_numero][0]}.")
+        current_line = current_station['ligne_numero']
+
+        if ligne_precedente != current_line:
+            # Changement de ligne, déterminer le terminus basé sur le sens du déplacement
+            ligne_terminus = terminus[current_line]
+            current_name = current_station['station_nom']
+            next_name = next_station['station_nom']
+
+            # Si le terminus de la ligne existe, choisir celui vers lequel on se dirige
+            if next_name in ligne_terminus:
+                terminus_direction = next_name
             else:
-                route_instructions.append(f"Changez de ligne et prenez la {ligne_numero}, direction {terminus[ligne_numero][1]}.")
+                # Sinon, choisir l'autre terminus comme direction
+                terminus_direction = (
+                    ligne_terminus[1] if ligne_terminus[0] == current_name else ligne_terminus[0]
+                )
 
-        ligne_precedente = ligne_numero
-        direction_precedente = direction_numero
+            route_instructions.append(
+                f"Prenez la ligne {current_line}, direction {terminus_direction}."
+            )
+
+        ligne_precedente = current_line
+
+    # Ajouter la dernière station
+    last_station = stations[chemin[-1]]
+    route_instructions.append(f"Descendez à {last_station['station_nom']}.")
 
     return "\n".join(route_instructions)
+
 
 
 # -------------------------------
 # Visualisation graphique
 # -------------------------------
 LINE_COLORS = {
-    "1": "blue", "2": "green", "3": "red","3bis": "olive", "4": "purple", "5": "orange",
+    "1": "blue", "2": "green", "3": "red","3bis": "olive", "4": "violet", "5": "orange",
     "6": "pink", "7": "brown", "7bis": "lightblue", "8": "yellow",
     "9": "cyan", "10": "lime", "11": "gray", "12": "gold",
     "13": "darkblue", "14": "darkred"
@@ -331,7 +352,7 @@ def format_temps(minutes_float):
 # -------------------------------
 # Interface utilisateur
 # -------------------------------
-st.title("Metro Surfer :  Votre guide interactif du métro")
+st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
 # Charger les données
@@ -345,9 +366,25 @@ station_noms = {id: info['station_nom'] for id, info in stations.items()}
 
 # Enlever les doublons dans la liste des stations
 station_unique = ["Aucune sélection"] + list(set(station_noms.values()))
-# Sélection des stations de départ et d'arrivée
-depart_station_nom = st.sidebar.selectbox("Station de départ", station_unique)
-arrivee_station_nom = st.sidebar.selectbox("Station d’arrivée", station_unique)
+
+# Ajout d'un conteneur pour gérer l'inversion des stations
+with st.sidebar:
+    st.subheader("Sélectionnez les stations")
+    # Initialisation des stations sélectionnées
+    if "depart_station" not in st.session_state:
+        st.session_state.depart_station = "Aucune sélection"
+    if "arrivee_station" not in st.session_state:
+        st.session_state.arrivee_station = "Aucune sélection"
+
+    # Composants de sélection
+    depart_station_nom = st.selectbox("Station de départ", station_unique, key="depart_station")
+    arrivee_station_nom = st.selectbox("Station d’arrivée", station_unique, key="arrivee_station")
+
+    # Bouton pour inverser les stations
+    if st.button("🔄 Inverser"):
+    # Inverser les stations dans session_state
+        st.session_state.depart_station, st.session_state.arrivee_station = st.session_state.arrivee_station, st.session_state.depart_station
+
 
 # Vérifier que les stations sont différentes
 if depart_station_nom == "Aucune sélection" or arrivee_station_nom == "Aucune sélection":
@@ -376,7 +413,6 @@ else:
             st.plotly_chart(fig)
         else:
             st.write("Aucun chemin trouvé entre les stations.")
-
 
 
 # Calcul et affichage de l'ACPM pour tout le graphe
