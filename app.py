@@ -8,6 +8,7 @@ from utils.visualisation import LIGNE_COULEURS
 from utils.visualisation import set_bg_hack_url
 from utils.visualisation import gif_bg_top
 import networkx as nx
+from PIL import Image
 
 st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png", layout="wide")
 
@@ -31,7 +32,9 @@ sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
 st.title("Metro Surfer : Votre guide interactif du métro :)")
-st.image('images/metro.gif', height=50)
+gif_image = Image.open('images/metro.gif')
+gif_image = gif_image.resize((50, 50))
+st.image(gif_image)
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
