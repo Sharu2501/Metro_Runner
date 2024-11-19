@@ -200,8 +200,8 @@ def sidebar_bg(side_bg):
         unsafe_allow_html=True,
     )
 def gif_bg(gif_bg):
-    """
-    Set the background image of the sidebar using a GIF file,
+     """
+    Set the background image of the top bar (header) using a GIF file,
     converting it into Base64 and applying it as the background.
     """
     gif_bg_ext = 'gif'  # File extension for GIF images
@@ -215,11 +215,13 @@ def gif_bg(gif_bg):
     st.markdown(
         f"""
         <style>
-        [data-testid="stSidebar"] > div:first-child {{
+        /* Cibler la barre du haut */
+        .css-1y4vvv6 {{  /* Selector spécifique à la barre du haut dans Streamlit */
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;
+            height: 100px; /* Vous pouvez ajuster la hauteur si nécessaire */
         }}
         </style>
         """,
