@@ -94,7 +94,8 @@ if st.sidebar.button("Afficher l'ACPM"):
     #st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
-if st.session_state.graphe_actif == "plus_court_chemin":
+# Affichage  du graphe
+if st.session_state.graphe_actif == "plus_court_chemin" and 'chemin' in locals():
     st.session_state.fig = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre=f"Plus Court Chemin : {temps_formatte}")
     st.plotly_chart(st.session_state.fig, use_container_width=True)
 elif st.session_state.graphe_actif == "acpm":
