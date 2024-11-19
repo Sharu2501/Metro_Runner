@@ -106,7 +106,7 @@ else:
     st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
     st.plotly_chart(st.session_state.fig, use_container_width=True)
     
-#st.image('images/metro.gif',  use_container_width=True)
+st.image('images/metro.gif',  use_container_width=True)
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
