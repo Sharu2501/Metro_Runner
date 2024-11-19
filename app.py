@@ -41,6 +41,25 @@ if "graphe_actif" not in st.session_state:
 # Afficher une seule carte en fonction de l'état
 st.plotly_chart(st.session_state.fig, use_container_width=True)
 
+# Créer le dictionnaire des noms
+station_noms = {id: info['station_nom'] for id, info in stations.items()}
+
+# Enlever les doublons dans la liste des stations
+station_unique = ["Aucune sélection"] + list(set(station_noms.values()))
+
+# Ajout d'un conteneur pour gérer l'inversion des stations
+with st.sidebar:
+    st.subheader("Sélectionnez les stations")
+    # Initialisation des stations sélectionnées
+    if "depart_station" not in st.session_state:
+        st.session_state.depart_station = "Aucune sélection"
+    if "arrivee_station" not in st.session_state:
+        st.session_state.arrivee_station = "Aucune sélection"
+
+    # Composants de sélection
+    depart_station_nom = st.selectbox("Station de départ", station_unique, key="depart_station")
+    arrivee_station_nom = st.selectbox("Station d’arrivée", station_unique, key="arrivee_station")
+
 # Vérifier que les stations sont différentes
 if depart_station_nom == "Aucune sélection" or arrivee_station_nom == "Aucune sélection":
     st.error("Veuillez sélectionner une station de départ et une station d’arrivée.")
