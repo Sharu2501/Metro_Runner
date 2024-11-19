@@ -30,10 +30,10 @@ Remarques :
 Scénario :
 
 Afficher le chemin le plus court entre 2 stations (de votre choix) :
-	- dans la liste déroulante à gauche choisissez la stations de départ et d'arriver de votre choix
-	- ensuite cliquez sur "Calculer le plus court chemin"
-	- Le plus court chemin entre ces 2 stations en rouge s'affiche sur la carte
+- dans la liste déroulante à gauche choisissez la stations de départ et d'arriver de votre choix
+- ensuite cliquez sur "Calculer le plus court chemin"
+- Le plus court chemin entre ces 2 stations en rouge s'affiche sur la carte
 
 Afficher l'APCM :
-	- cliquez sur "Afficher l'APCM"
-	- l'arbre couvrant minimal s'affiche sur la carte et le temps total s'affiche au dessus
+- cliquez sur "Afficher l'APCM"
+- l'arbre couvrant minimal s'affiche sur la carte et le temps total s'affiche au dessus
