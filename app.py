@@ -30,8 +30,18 @@ set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
-st.title("Metro Surfer : Votre guide interactif du métro :)")
-st.image('images/metro.gif',  use_container_width=True, width=400)
+st.title("Bienvenue sur Metro Surfer, votre guide du métro :)")
+
+# Afficher le GIF à côté du titre
+st.markdown(
+    """
+    <div style="display: flex; align-items: center;">
+        <h1 style="margin-right: 10px;">Metro Surfer : Votre guide interactif du métro :)</h1>
+        <img src="images/metro.gif" width="50" height="50" />
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
