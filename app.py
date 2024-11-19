@@ -97,10 +97,10 @@ if st.sidebar.button("Afficher l'ACPM"):
 if st.session_state.graphe_actif == "plus_court_chemin":
     st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre=f"Plus Court Chemin : {temps_formatte}")
     st.plotly_chart(st.session_state.fig, use_container_width=True)
-else if :
+else if:
     st.session_state.graphe_actif = "acpm"
     st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
-else :
+else:
     st.plotly_chart(st.session_state.fig, use_container_width=True)
 
 # Affichage de la légende des lignes
