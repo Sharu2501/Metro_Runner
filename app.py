@@ -33,7 +33,7 @@ gif_bg_top("images/metro.gif")
 
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 gif_image = Image.open('images/metro.gif')
-gif_image = gif_image.resize((50, 50))
+gif_image = gif_image.resize((200, 200))
 st.image(gif_image)
 st.sidebar.title("Me déplacer")
 
