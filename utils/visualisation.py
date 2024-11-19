@@ -202,7 +202,7 @@ def sidebar_bg(side_bg):
 
 def gif_bg_top(gif_bg):
     """
-    Set the background image of the top bar (header) using a GIF file,
+    Set the background image of the bottom part of the window (without affecting Streamlit's footer),
     converting it into Base64 and applying it as the background.
     """
     gif_bg_ext = 'gif'  # File extension for GIF images
@@ -216,16 +216,23 @@ def gif_bg_top(gif_bg):
     st.markdown(
         f"""
         <style>
-        /* Cibler la barre du haut */
-        .css-1y4vvv6 {{  /* Selector spécifique à la barre du haut dans Streamlit */
+        /* Ajouter le GIF en bas de la fenêtre */
+        .bottom-gif {{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px; /* Ajustez la hauteur selon vos besoins */
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
             background-size: cover;
             background-position: center center;
-            background-attachment: fixed;
-            height: 100px; /* Vous pouvez ajuster la hauteur si nécessaire */
+            z-index: 1000; /* Assurez-vous qu'il est au-dessus des autres éléments */
         }}
         </style>
         """,
         unsafe_allow_html=True,
     )
+
+    # Ajouter un div contenant le GIF dans la page
+    st.markdown('<div class="bottom-gif"></div>', unsafe_allow_html=True)
 
