@@ -39,8 +39,8 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
                 x=[x], y=[y], mode='markers+text',
                 text=[data['station_nom']],
                 textposition='top right',  
-                textfont=dict(size=8), 
-                marker=dict(size=10, color=line_color),
+                textfont=dict(size=6), 
+                marker=dict(size=8, color=line_color),
                 hoverinfo='text'
             ))
 
