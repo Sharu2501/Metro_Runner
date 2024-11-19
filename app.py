@@ -34,11 +34,12 @@ st.markdown(
     """
     <div style="display: flex; align-items: center;">
         <h1 style="margin-right: 10px;">Bienvenue sur Metro Surfer, votre guide interactif du métro !</h1>
-        <img src="images/metro.gif" width="50" height="50" />
+        <img src="metro.gif" width="50" height="50" />
     </div>
     """, 
     unsafe_allow_html=True
 )
+st.image("images/metro.gif", width=400) 
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
