@@ -205,7 +205,7 @@ def gif_bg_top(gif_bg):
     Set the background image of the bottom part of the window (without affecting Streamlit's footer),
     converting it into Base64 and applying it as the background.
     """
-    gif_bg_ext = 'gif'  # File extension for GIF images
+    gif_bg_ext = 'gif'  
 
     # Open the GIF image in binary mode and encode it as base64
     with open(gif_bg, "rb") as img_file:
@@ -218,15 +218,15 @@ def gif_bg_top(gif_bg):
         <style>
         /* Ajouter le GIF en bas de la fenêtre */
         .bottom-gif {{
-            position: fixed;
-            bottom: 0;
+            position: fixed;  /* Fixe la position au bas de la fenêtre */
+            bottom: 0;  /* Place le GIF au bas de la fenêtre */
             left: 0;
-            width: 100%;
-            height: 150px; /* Ajustez la hauteur selon vos besoins */
+            width: 100%;  /* Prend toute la largeur de l'écran */
+            height: 150px; /* Ajustez la hauteur selon vos besoins (plus petit que 500px) */
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
             background-size: cover;
             background-position: center center;
-            z-index: 1000; /* Assurez-vous qu'il est au-dessus des autres éléments */
+            z-index: 10;  /* Assurez-vous qu'il est visible au-dessus des autres éléments */
         }}
         </style>
         """,
