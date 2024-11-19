@@ -33,6 +33,9 @@ sidebar_bg("images/MetroSurfer.png")
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
+fig_default = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
+st.plotly_chart(fig_default, use_container_width=True)
+
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
 
