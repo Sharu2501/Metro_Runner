@@ -31,12 +31,9 @@ sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
 st.title("Bienvenue sur Metro Surfer, votre guide du métro :)")
-
-# Afficher le GIF à côté du titre
 st.markdown(
     """
     <div style="display: flex; align-items: center;">
-        <h1 style="margin-right: 10px;">Metro Surfer : Votre guide interactif du métro :)</h1>
         <img src="images/metro.gif" width="50" height="50" />
     </div>
     """, 
