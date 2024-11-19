@@ -37,6 +37,7 @@ st.sidebar.title("Me déplacer")
 if "graphe_actif" not in st.session_state:
     st.session_state.graphe_actif = "complet"
     st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
+    st.session_state.update_graphe = False
 
 # Afficher une seule carte en fonction de l'état
 st.plotly_chart(st.session_state.fig, use_container_width=True)
@@ -47,7 +48,6 @@ station_noms = {id: info['station_nom'] for id, info in stations.items()}
 # Enlever les doublons dans la liste des stations
 station_unique = ["Aucune sélection"] + list(set(station_noms.values()))
 
-# Ajout d'un conteneur pour gérer l'inversion des stations
 with st.sidebar:
     st.subheader("Sélectionnez les stations")
     # Initialisation des stations sélectionnées
@@ -84,6 +84,7 @@ else:
             # Mettre à jour l'état de la carte avec le plus court chemin
             st.session_state.graphe_actif = "plus_court_chemin"
             st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
+            st.session_state.update_graphe = True
             st.write(route_info)
         else:
             st.write("Aucun chemin trouvé entre les stations.")
@@ -96,6 +97,7 @@ if st.sidebar.button("Afficher l'ACPM"):
     # Mettre à jour l'état de la carte avec l'ACPM
     st.session_state.graphe_actif = "acpm"
     st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
+    st.session_state.update_graph = True
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
 # Affichage de la légende des lignes
@@ -109,3 +111,8 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
     )
 
 #gif_bg("images/metro.gif")
+
+if st.session_state.update_graph:
+    st.plotly_chart(st.session_state.fig, use_container_width=True)
+    st.session_state.update_graph = False
+
