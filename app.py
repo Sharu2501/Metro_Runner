@@ -80,11 +80,11 @@ else:
             temps_formatte = format_temps(temps)
             st.write(f"Durée estimée : {temps_formatte}")
             route_info = affiche_route_info(chemin, stations, terminus)
-            st.write(route_info)
 
             # Mettre à jour l'état de la carte avec le plus court chemin
             st.session_state.graphe_actif = "plus_court_chemin"
             st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
+            st.write(route_info)
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
@@ -92,12 +92,11 @@ else:
 if st.sidebar.button("Afficher l'ACPM"):
     acpm_prim, temps_total = prim(metro_graphe)
     temps_formatte = format_temps(temps_total)
-    st.write(f"Temps total de l'ACPM : {temps_formatte}")
-
+    
     # Mettre à jour l'état de la carte avec l'ACPM
     st.session_state.graphe_actif = "acpm"
     st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
-
+    st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
