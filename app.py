@@ -31,7 +31,7 @@ sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
 st.title("Metro Surfer : Votre guide interactif du métro :)")
-st.image('images/metro.gif',  use_container_width=True)
+st.image('images/metro.gif',  use_container_width=True, width=400)
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
