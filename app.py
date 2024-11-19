@@ -30,8 +30,6 @@ set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
-#st.image('images/MetroSurfer.png',  use_container_width=True)
-st.image("metro.gif", width=400)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
@@ -107,6 +105,8 @@ else:
     # Si le graphe actif est complet
     st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
     st.plotly_chart(st.session_state.fig, use_container_width=True)
+    
+#st.image('images/metro.gif',  use_container_width=True)
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
