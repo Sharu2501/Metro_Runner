@@ -31,28 +31,11 @@ set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
-st.title("Metro Surfer : Votre guide interactif du métro :)")
 gif_image = Image.open('images/metro.gif')
 gif_image = gif_image.resize((500, 500))
+
+st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.image(gif_image)
-
-st.markdown(
-    """
-    <style>
-        .gif-container {
-            position: relative;
-            z-index: 9999;  # Garantit que le GIF sera au premier plan
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Afficher l'image avec un conteneur
-st.markdown(
-    f'<div class="gif-container">{st.image(gif_image, use_column_width=True)}</div>',
-    unsafe_allow_html=True
-)
 
 st.sidebar.title("Me déplacer")
 
