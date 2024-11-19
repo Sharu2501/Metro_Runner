@@ -33,27 +33,13 @@ sidebar_bg("images/MetroSurfer.png")
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
-fig_defaut = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
-st.plotly_chart(fig_defaut, use_container_width=True)
+# Initialisation de l'état de la carte (état par défaut : "graphe complet")
+if "graphe_actif" not in st.session_state:
+    st.session_state.graphe_actif = "complet"
+    st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
 
-# Créer le dictionnaire des noms
-station_noms = {id: info['station_nom'] for id, info in stations.items()}
-
-# Enlever les doublons dans la liste des stations
-station_unique = ["Aucune sélection"] + list(set(station_noms.values()))
-
-# Ajout d'un conteneur pour gérer l'inversion des stations
-with st.sidebar:
-    st.subheader("Sélectionnez les stations")
-    # Initialisation des stations sélectionnées
-    if "depart_station" not in st.session_state:
-        st.session_state.depart_station = "Aucune sélection"
-    if "arrivee_station" not in st.session_state:
-        st.session_state.arrivee_station = "Aucune sélection"
-
-    # Composants de sélection
-    depart_station_nom = st.selectbox("Station de départ", station_unique, key="depart_station")
-    arrivee_station_nom = st.selectbox("Station d’arrivée", station_unique, key="arrivee_station")
+# Afficher une seule carte en fonction de l'état
+st.plotly_chart(st.session_state.fig, use_container_width=True)
 
 # Vérifier que les stations sont différentes
 if depart_station_nom == "Aucune sélection" or arrivee_station_nom == "Aucune sélection":
@@ -77,26 +63,24 @@ else:
             route_info = affiche_route_info(chemin, stations, terminus)
             st.write(route_info)
 
-            # Affichage du trajet sur la carte interactive
-            fig_defaut = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
-            st.plotly_chart(fig_defaut)
+            # Mettre à jour l'état de la carte avec le plus court chemin
+            st.session_state.graphe_actif = "plus_court_chemin"
+            st.session_state.fig = plot_metro(
+                metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin"
+            )
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
 # Calcul et affichage de l'ACPM pour tout le graphe
 if st.sidebar.button("Afficher l'ACPM"):
-    acpm_prim, temps_total = prim(metro_graphe) 
-    temps_formatte = format_temps(temps_total) 
+    acpm_prim, temps_total = prim(metro_graphe)
+    temps_formatte = format_temps(temps_total)
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
-    # Visualisation de l'ACPM
-    fig_defaut = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
-    fig_defaut.update_layout(
-        height=500,
-        autosize=False,
-        width=1500,
-    )
-    st.plotly_chart(fig_defaut)
+    # Mettre à jour l'état de la carte avec l'ACPM
+    st.session_state.graphe_actif = "acpm"
+    st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
+
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
