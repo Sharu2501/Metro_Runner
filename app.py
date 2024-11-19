@@ -35,6 +35,13 @@ with mid:
    st.image("images/metro.gif")
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 
+gif_image = Image.open('images/metro.gif')
+
+# Redimensionner le GIF (par exemple, à une largeur de 200px tout en conservant le ratio)
+gif_image = gif_image.resize((200, int(gif_image.height * 200 / gif_image.width)))
+
+# Afficher le GIF redimensionné dans Streamlit
+st.image(gif_image)
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
