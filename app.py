@@ -4,9 +4,9 @@ from utils.chargement_donnees import recup_stations, recup_laisons, recup_positi
 from utils.visualisation import plot_metro, affiche_route_info, sidebar_bg
 from utils.algorithmes import verifie_connexite, ajoute_liaisons_manquantes
 from utils.algorithmes import construire_graphe, format_temps
-from utils.visualisation import LIGNE_COULEURS;
-from utils.visualisation import set_bg_hack_url;
-from utils.visualisation import gif_bg_top;
+from utils.visualisation import LIGNE_COULEURS
+from utils.visualisation import set_bg_hack_url
+from utils.visualisation import gif_bg_top
 import networkx as nx
 
 st.set_page_config(page_title="Metro Surfer", page_icon="images/MetroSurfer.png", layout="wide")
