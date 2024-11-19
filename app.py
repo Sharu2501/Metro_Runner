@@ -38,9 +38,6 @@ if "graphe_actif" not in st.session_state:
     st.session_state.graphe_actif = "complet"
     st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
 
-# Affiche une seule carte
-st.plotly_chart(st.session_state.fig, use_container_width=True)
-
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
 
