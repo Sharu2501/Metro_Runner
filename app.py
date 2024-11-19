@@ -84,9 +84,7 @@ else:
 
             # Mettre à jour l'état de la carte avec le plus court chemin
             st.session_state.graphe_actif = "plus_court_chemin"
-            st.session_state.fig = plot_metro(
-                metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin"
-            )
+            st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
