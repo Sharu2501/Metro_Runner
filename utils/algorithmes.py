@@ -128,7 +128,18 @@ def prim(graphe):
 
 
 def format_temps(minutes_float):
-    """Convertis un temps en minutes (float) au format minutes:secondes."""
-    minutes = int(minutes_float)
-    secondes = round((minutes_float - minutes) * 60)
-    return f"{minutes} min {secondes} sec"
+    """
+    Convertit un temps en minutes (float) au format heures, minutes et secondes.
+    """
+    total_seconds = int(minutes_float * 60)
+    heures = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    secondes = total_seconds % 60
+
+    if heures > 0:
+        return f"{heures} h {minutes} min {secondes} sec"
+    elif minutes > 0:
+        return f"{minutes} min {secondes} sec"
+    else:
+        return f"{secondes} sec"
+
