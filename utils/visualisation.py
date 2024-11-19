@@ -76,6 +76,8 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
             yaxis=dict(range=y_range, visible=False),
             showlegend=False,
             autosize=True,
+            width=1200,
+            height=1000,
             margin=dict(l=0, r=0, b=0, t=0),
         )
     else:
@@ -86,6 +88,8 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
             yaxis=dict(visible=False),
             showlegend=False,
             autosize=True,
+            width=1200,
+            height=1000,
             margin=dict(l=0, r=0, b=0, t=0),
         )
 
