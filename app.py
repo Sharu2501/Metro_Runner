@@ -33,8 +33,8 @@ sidebar_bg("images/MetroSurfer.png")
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
-fig_default = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
-st.plotly_chart(fig_default, use_container_width=True)
+fig_defaut = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
+st.plotly_chart(fig_defaut, use_container_width=True)
 
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
@@ -78,8 +78,8 @@ else:
             st.write(route_info)
 
             # Affichage du trajet sur la carte interactive
-            fig = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
-            st.plotly_chart(fig)
+            fig_defaut = plot_metro(metro_graphe, stations, positions, chemin=chemin, titre="Plus Court Chemin")
+            st.plotly_chart(fig_defaut)
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
@@ -90,14 +90,13 @@ if st.sidebar.button("Afficher l'ACPM"):
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
     # Visualisation de l'ACPM
-    fig_acpm_prim = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
-    fig_acpm_prim.update_layout(
+    fig_defaut = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
+    fig_defaut.update_layout(
         height=500,
         autosize=False,
         width=1500,
     )
-    st.plotly_chart(fig_acpm_prim)
-
+    st.plotly_chart(fig_defaut)
 
 # Affichage de la légende des lignes
 st.sidebar.subheader("Légende des lignes")
