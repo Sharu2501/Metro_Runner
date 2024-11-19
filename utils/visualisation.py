@@ -216,18 +216,17 @@ def gif_bg_top(gif_bg):
     st.markdown(
         f"""
         <style>
-        /* Ajouter le GIF en bas de la fenêtre avec une taille réduite */
         .bottom-gif {{
             position: fixed;  
             bottom: 0; 
-            left: 50%;  /* Centrer horizontalement */
-            transform: translateX(-50%);  /* Pour un centrage précis */
-            width: 30%;  /* Taille réduite du GIF */
-            height: auto;  /* Garder les proportions du GIF */
+            left: 50%;  
+            transform: translateX(-50%);  
+            width: 100%; 
+            height: auto; 
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
-            background-size: contain;  /* Ajuster le GIF pour qu'il soit contenu dans la taille spécifiée */
+            background-size: contain;  
             background-position: center center;
-            z-index: 9999;  /* Assurer que le GIF reste au-dessus du contenu */
+            z-index: 9999; 
         }}
         
         /* Ajouter un padding au bas pour éviter que le contenu ne soit recouvert */
