@@ -216,9 +216,9 @@ def gif_bg_top(gif_bg):
     st.markdown(
         f"""
         <style>
-        /* Ajouter le GIF en bas de la fenêtre */
+        /* Ajouter le GIF en bas de la fenêtre sans superposition */
         .bottom-gif {{
-            position: relative;  
+            position: fixed;  
             bottom: 0; 
             left: 0;
             width: 100%; 
@@ -227,6 +227,12 @@ def gif_bg_top(gif_bg):
             background-size: cover;
             background-position: center center;
             z-index: 10;
+            margin-bottom: 50px;  /* Espace pour éviter la superposition */
+        }}
+        
+        /* Espacer la carte et autres éléments du bas */
+        .main-content {{
+            padding-bottom: 60px;  /* Ajouter un padding pour éviter que le contenu soit caché sous le GIF */
         }}
         </style>
         """,
@@ -235,4 +241,7 @@ def gif_bg_top(gif_bg):
 
     # Ajouter un div contenant le GIF dans la page
     st.markdown('<div class="bottom-gif"></div>', unsafe_allow_html=True)
+
+    # Pour les autres éléments, tu peux ajouter une classe à leur contenu, par exemple pour la carte
+    st.markdown('<div class="main-content"></div>', unsafe_allow_html=True)
 
