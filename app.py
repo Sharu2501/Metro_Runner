@@ -30,7 +30,9 @@ ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
 set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 
-st.image('images/metro.gif', use_container_width=True, width=50)
+_left, mid, _right = st.columns(3)
+with mid:
+   st.image("images/metro.gif")
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 
 st.sidebar.title("Me déplacer")
