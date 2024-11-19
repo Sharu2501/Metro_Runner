@@ -199,7 +199,8 @@ def sidebar_bg(side_bg):
         """,
         unsafe_allow_html=True,
     )
-def gif_bg(gif_bg):
+
+def gif_bg_top(gif_bg):
     """
     Set the background image of the top bar (header) using a GIF file,
     converting it into Base64 and applying it as the background.
@@ -227,3 +228,4 @@ def gif_bg(gif_bg):
         """,
         unsafe_allow_html=True,
     )
+
