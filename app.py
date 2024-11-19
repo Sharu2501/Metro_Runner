@@ -80,10 +80,13 @@ else:
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
-
 # Calcul et affichage de l'ACPM pour tout le graphe
 if st.sidebar.button("Afficher l'ACPM"):
-    acpm_prim = prim(metro_graphe)
+    acpm_prim, total_time = prim(metro_graphe)
+    formatted_time = format_temps(total_time)  # Formater le temps total
+    st.write(f"Temps total de l'ACPM : {formatted_time}")  # Afficher le temps total
+
+    # Visualisation de l'ACPM
     fig_acpm_prim = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
     fig_acpm_prim.update_layout(
         height=500,
