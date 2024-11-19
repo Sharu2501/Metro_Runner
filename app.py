@@ -35,6 +35,25 @@ st.title("Metro Surfer : Votre guide interactif du métro :)")
 gif_image = Image.open('images/metro.gif')
 gif_image = gif_image.resize((500, 500))
 st.image(gif_image)
+
+st.markdown(
+    """
+    <style>
+        .gif-container {
+            position: relative;
+            z-index: 9999;  # Garantit que le GIF sera au premier plan
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Afficher l'image avec un conteneur
+st.markdown(
+    f'<div class="gif-container">{st.image(gif_image, use_column_width=True)}</div>',
+    unsafe_allow_html=True
+)
+
 st.sidebar.title("Me déplacer")
 
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
