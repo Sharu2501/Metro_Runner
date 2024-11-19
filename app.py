@@ -28,6 +28,7 @@ ajoute_liaisons_manquantes(metro_graphe, stations, liaisons)
 # -------------------------------
 set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
+gif_bg("images/metro.gif")
 
 #st.image('images/MetroSurfer.png',  use_container_width=True)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
@@ -115,6 +116,4 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
         f"</div><span style='vertical-align: top; margin-left: 10px;'>Ligne {ligne_numero}</span>",
         unsafe_allow_html=True
     )
-    
-#gif_bg("images/metro.gif")
 
