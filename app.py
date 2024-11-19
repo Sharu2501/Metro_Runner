@@ -106,6 +106,8 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
         f"</div><span style='vertical-align: top; margin-left: 10px;'>Ligne {ligne_numero}</span>",
         unsafe_allow_html=True
     )
-
+if "fig" in st.session_state:
+    st.plotly_chart(st.session_state.fig, use_container_width=True)
+    
 #gif_bg("images/metro.gif")
 
