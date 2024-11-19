@@ -207,7 +207,7 @@ def gif_bg_top(gif_bg):
     """
     gif_bg_ext = 'gif'  
 
-    # Open the GIF image in binary mode and encode it as base64
+    # Ouvrir l'image GIF en mode binaire et la convertir en base64
     with open(gif_bg, "rb") as img_file:
         img_data = img_file.read()
 
@@ -216,23 +216,23 @@ def gif_bg_top(gif_bg):
     st.markdown(
         f"""
         <style>
-        /* Ajouter le GIF en bas de la fenêtre sans superposition */
+        /* Ajouter le GIF en bas de la fenêtre avec une taille réduite */
         .bottom-gif {{
             position: fixed;  
             bottom: 0; 
-            left: 0;
-            width: 100%; 
-            height: 50px; 
+            left: 50%;  /* Centrer horizontalement */
+            transform: translateX(-50%);  /* Pour un centrage précis */
+            width: 30%;  /* Taille réduite du GIF */
+            height: auto;  /* Garder les proportions du GIF */
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
-            background-size: cover;
+            background-size: contain;  /* Ajuster le GIF pour qu'il soit contenu dans la taille spécifiée */
             background-position: center center;
-            z-index: 10;
-            margin-bottom: 50px;  /* Espace pour éviter la superposition */
+            z-index: 9999;  /* Assurer que le GIF reste au-dessus du contenu */
         }}
         
-        /* Espacer la carte et autres éléments du bas */
+        /* Ajouter un padding au bas pour éviter que le contenu ne soit recouvert */
         .main-content {{
-            padding-bottom: 60px;  /* Ajouter un padding pour éviter que le contenu soit caché sous le GIF */
+            padding-bottom: 80px;  /* Assurer qu'il y ait assez d'espace sous le contenu */
         }}
         </style>
         """,
@@ -242,6 +242,6 @@ def gif_bg_top(gif_bg):
     # Ajouter un div contenant le GIF dans la page
     st.markdown('<div class="bottom-gif"></div>', unsafe_allow_html=True)
 
-    # Pour les autres éléments, tu peux ajouter une classe à leur contenu, par exemple pour la carte
+    # Ajouter un div pour la classe de contenu principal si nécessaire (par exemple pour la carte)
     st.markdown('<div class="main-content"></div>', unsafe_allow_html=True)
 
