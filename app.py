@@ -31,6 +31,7 @@ sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
 #st.image('images/MetroSurfer.png',  use_container_width=True)
+st.image("metro.gif", width=400)
 st.title("Metro Surfer : Votre guide interactif du métro :)")
 st.sidebar.title("Me déplacer")
 
