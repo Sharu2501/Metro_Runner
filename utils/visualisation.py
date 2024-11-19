@@ -218,15 +218,15 @@ def gif_bg_top(gif_bg):
         <style>
         /* Ajouter le GIF en bas de la fenêtre */
         .bottom-gif {{
-            position: fixed;  /* Fixe la position au bas de la fenêtre */
-            bottom: 0;  /* Place le GIF au bas de la fenêtre */
+            position: relative;  
+            bottom: 0; 
             left: 0;
-            width: 100%;  /* Prend toute la largeur de l'écran */
-            height: 150px; /* Ajustez la hauteur selon vos besoins (plus petit que 500px) */
+            width: 100%; 
+            height: 50px; 
             background: url(data:image/{gif_bg_ext};base64,{img_base64});
             background-size: cover;
             background-position: center center;
-            z-index: 10;  /* Assurez-vous qu'il est visible au-dessus des autres éléments */
+            z-index: 10;
         }}
         </style>
         """,
