@@ -36,7 +36,7 @@ st.sidebar.title("Me déplacer")
 # Initialisation de l'état de la carte (état par défaut : "graphe complet")
 if "graphe_actif" not in st.session_state:
     st.session_state.graphe_actif = "complet"
-    st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
+    #st.session_state.fig = plot_metro(metro_graphe, stations, positions, titre="Réseau Métro Complet")
 
 # Créer le dictionnaire des noms
 station_noms = {id: info['station_nom'] for id, info in stations.items()}
@@ -79,7 +79,7 @@ else:
 
             # Mettre à jour l'état de la carte avec le plus court chemin
             st.session_state.graphe_actif = "plus_court_chemin"
-            st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre=f"Plus Court Chemin : {temps_formatte}")
+            #st.session_state.fig = plot_metro( metro_graphe, stations, positions, chemin=chemin, titre=f"Plus Court Chemin : {temps_formatte}")
             st.write(route_info)
         else:
             st.write("Aucun chemin trouvé entre les stations.")
@@ -91,7 +91,7 @@ if st.sidebar.button("Afficher l'ACPM"):
     
     # Mettre à jour l'état de la carte avec l'ACPM
     st.session_state.graphe_actif = "acpm"
-    st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
+    #st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
 if "fig" in st.session_state:
