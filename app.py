@@ -97,7 +97,7 @@ if st.sidebar.button("Afficher l'ACPM"):
     # Mettre à jour l'état de la carte avec l'ACPM
     st.session_state.graphe_actif = "acpm"
     st.session_state.fig = plot_metro(acpm_prim, stations, positions, titre="Arbre Couvrant de Poids Minimum (Prim)")
-    st.session_state.update_graph = True
+    st.session_state.update_graphe = True
     st.write(f"Temps total de l'ACPM : {temps_formatte}")
 
 # Affichage de la légende des lignes
@@ -112,7 +112,7 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
 
 #gif_bg("images/metro.gif")
 
-if st.session_state.update_graph:
+if st.session_state.update_graphe:
     st.plotly_chart(st.session_state.fig, use_container_width=True)
-    st.session_state.update_graph = False
+    st.session_state.update_graphe = False
 
