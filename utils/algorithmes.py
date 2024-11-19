@@ -93,7 +93,7 @@ def prim(graphe):
     Args:
         graphe (nx.Graph): Graphe non orienté avec des poids sur les arêtes.
     Returns:
-        nx.Graph: L'arbre couvrant de poids minimum.
+        tuple: (nx.Graph, float) L'arbre couvrant de poids minimum et le temps total en minutes.
     """
     from heapq import heappop, heappush
 
@@ -109,19 +109,23 @@ def prim(graphe):
     for neighbor, attributes in graphe[start_node].items():
         heappush(liaisons, (attributes['weight'], start_node, neighbor))
 
+    total_weight = 0  # Initialiser le poids total de l'ACPM
+
     while liaisons:
         weight, x, y = heappop(liaisons)  # Extraire l'arête de poids minimum
         if y not in visites:
             # Ajouter l'arête à l'ACPM
             acpm.add_edge(x, y, weight=weight)
             visites.add(y)
+            total_weight += weight  # Ajouter le poids de l'arête au total
 
             # Ajouter les nouvelles arêtes accessibles depuis y
             for neighbor, attributes in graphe[y].items():
                 if neighbor not in visites:
                     heappush(liaisons, (attributes['weight'], y, neighbor))
 
-    return acpm
+    return acpm, total_weight
+
 
 def format_temps(minutes_float):
     """Convertis un temps en minutes (float) au format minutes:secondes."""
