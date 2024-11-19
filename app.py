@@ -30,10 +30,10 @@ set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 gif_bg_top("images/metro.gif")
 
-st.title("Bienvenue sur Metro Surfer, votre guide du métro :)")
 st.markdown(
     """
     <div style="display: flex; align-items: center;">
+        <h1 style="margin-right: 10px;">Bienvenue sur Metro Surfer, votre guide interactif du métro !</h1>
         <img src="images/metro.gif" width="50" height="50" />
     </div>
     """, 
