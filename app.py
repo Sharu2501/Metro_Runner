@@ -25,9 +25,6 @@ metro_graphe = construire_graphe(stations, liaisons)
 set_bg_hack_url("images/MetroSurfer.png")
 sidebar_bg("images/MetroSurfer.png")
 
-_gauche, milieu, _droite = st.columns(3)
-with milieu:
-   st.image("images/metro.gif")
 st.title("Bienvenue sur Metro Surfer, votre guide du métro !")
 st.sidebar.title("Me déplacer")
 
@@ -150,3 +147,4 @@ for ligne_numero, couleur in LIGNE_COULEURS.items():
         unsafe_allow_html=True
     )
 
+st.image("images/metro.gif")
