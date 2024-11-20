@@ -9,7 +9,7 @@ Ce projet applique les concepts de théorie des graphes pour explorer le réseau
 Il permet de vérifier la connexité, de calculer le plus court chemin entre deux stations et de générer
 un arbre couvrant de poids minimal.
 
-<img src="images/MetroSurfer.png" alt="Carte interactive" width="400" style="display:block; margin:auto;">
+<img src="images/MetroSurfer.png" alt="Carte interactive" width="300" style="display:block; margin:auto;">
 
 ## Lancement du Projet
 Allez sur le site https://sharu2501-metro-runner-app-ohogzy.streamlit.app/ (qui se trouve également dans le à propos du repos)
@@ -36,25 +36,34 @@ Ils permettent de construire le graphe, effectuer des calculs de plus court chem
 - Cliquez sur la flèche en haut à gauche de la fenêtre si l'affichage de l'interface utilisateur pour l'entrée des stations n'est pas déjà affiché.
 - Dans la liste de départ déroulante à gauche, tapez et cliquez sur la station Carrefour Pleyel. 
 - Faire de même pour la station d'arrivée en tapant et cliquant sur la station Villejuif, P. Vaillant Couturier.
-- Ensuite, cliquez sur "Calculer le plus court chemin.
+- Ensuite, cliquez sur le bouton Calculer le plus court chemin.
 - Vous devriez maintenant avoir l'affichage suivant :
 
 Durée estimée : 29 min 54 sec
 
-A Carrefour Pleyel, prenez la ligne 13, direction Châtillon-Montrouge. 
-A Champs Élysées, Clémenceau, prenez la ligne 1, direction Château de Vincennes. 
-A Palais Royal, Musée du Louvre, prenez la ligne 7, direction La Courneuve, 8 Mai 1945. 
-Descendez à Villejuif, P. Vaillant Couturier, vous êtes arrivé !
+Itinéraire :
+Vous êtes à Carrefour Pleyel.
+Prenez la ligne 13 direction Châtillon-Montrouge. 
+À Champs Élysées, Clémenceau, changez et prenez la ligne 1 direction Château de Vincennes. 
+À Palais Royal, Musée du Louvre, changez et prenez la ligne 7 direction La Courneuve, 8 Mai 1945. 
+Vous devriez arriver à Villejuif, P. Vaillant Couturier dans environ 29 min 54 sec !
 
-- Le plus court chemin entre ces 2 stations en rouge s'affiche sur la carte dorénavant mise à jour avec un zoom sur la zone concernée.
+Le plus court chemin entre ces 2 stations en rouge s'affiche sur la carte dorénavant mise à jour avec un zoom sur la zone concernée.
 
 ### Afficher l'APCM :
-- Cliquez sur le bouton Calculer le plus court chemin
+- Cliquez sur le bouton Afficher l'ACPM
 - L'arbre couvrant minimal s'affiche sur la carte suivie de son temps total soit l'affichage suivant :
 
-Temps total de l'ACPM : 5 h 39 min 21 sec
+Durée totale : 5 h 39 min 21 sec
 
 ### Vérifier la connexité du graphe :
 - Cliquez sur le bouton Vérifier la connexité
 - Un message de succès ou d'erreur s'affichera en bas de page pour indiquer la connexité du graphe.
 Dans notre cas vous aurez l'affichage suivant : 
+
+Vérification de la connexité
+Le graphe est connexe : toutes les stations sont accessibles !
+
+<img src="images/exemple.png" alt="Carte interactive" width="500" style="display:block; margin:auto;">
+
+Nous vous souhaitons une bonne navigation !
