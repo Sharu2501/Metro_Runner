@@ -12,7 +12,7 @@ un arbre couvrant de poids minimal.
 <img src="images/MetroSurfer.png" alt="Carte interactive" width="300" style="display:block; margin:auto;">
 
 ## Lancement du Projet
-Allez sur le site https://sharu2501-metro-runner-app-ohogzy.streamlit.app/ (qui se trouve également dans le à propos du repos)
+Allez sur le site https://sharu2501-metro-runner-app-ohogzy.streamlit.app/
 
 ### Fonctionnalités présentes :
 
@@ -24,7 +24,7 @@ Allez sur le site https://sharu2501-metro-runner-app-ohogzy.streamlit.app/ (qui 
 
 ## Architecture du code source :
 
-- Dossier data : Les fichiers station.txt, liaison.txt et pospoints.txt dans le dossier data. Ils sont necessaires pour le chargement de données.
+- Dossier data : Les fichiers station.txt, liaison.txt et pospoints.txt dans le dossier data. Ils sont necessaires pour le chargement de données (position des stations dans l'espace, liens entre les différentes stations,...).
 - Dossier utils : Les classes algorithmes.py, chargement_donnees.py et visualisation.py sont dans le dossier utils. 
 Ils permettent de construire le graphe, effectuer des calculs de plus court chemin avec différents algorithmes et permettent de les visualiser sur une interface graphique.
 - Dossier images : L'image MetroSurfer.png et le gif metro.gif sont dans le dossier images. Ils permettent d'améliorer l'ergonomie du site web.
