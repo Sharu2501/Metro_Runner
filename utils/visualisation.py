@@ -113,7 +113,6 @@ def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"
             margin=dict(l=0, r=0, b=0, t=0),
         )
 
-    # Affichage des messages dans l'application
     if messages:
         with st.sidebar:
             st.sidebar.title("Informations")
@@ -146,12 +145,12 @@ def affiche_route_info(chemin, stations, terminus, temps):
         ligne_actuelle = station_actuelle['ligne_numero']
 
         if ligne_precedente != ligne_actuelle:
-            # Changement de ligne
+            # Si il y a un changement de ligne
             ligne_terminus = terminus[ligne_actuelle]
             nom_actuel = station_actuelle['station_nom']
             nom_suivant = station_suivante['station_nom']
 
-            # Recherche de terminus
+            # Terminus présent ou non
             if nom_suivant in ligne_terminus:
                 terminus_direction = nom_suivant
             else:
@@ -251,7 +250,6 @@ def gif_bg_top(gif_bg):
         unsafe_allow_html=True,
     )
 
-    # Ajoute un div contenant le GIF dans la page
     st.markdown('<div class="bottom-gif"></div>', unsafe_allow_html=True)
     st.markdown('<div class="main-content"></div>', unsafe_allow_html=True)
 

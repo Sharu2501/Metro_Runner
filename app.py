@@ -90,7 +90,7 @@ else:
         else:
             st.write("Aucun chemin trouvé entre les stations.")
 
-# Calcul et affichage de l'ACPM pour tout le graphe
+# Calcul et affichage de l'ACPM
 if st.sidebar.button("Afficher l'ACPM"):
     acpm_prim, temps_total = prim(metro_graphe)
     temps_formatte = format_temps(temps_total)

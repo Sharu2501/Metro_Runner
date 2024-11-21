@@ -5,10 +5,8 @@ def verifie_connexite(graphe):
     if not graphe.nodes:
         return True  # Un graphe sans nœuds est connexe
 
-    # On commence la recherche en profondeur à partir d'un nœud
     depart_node = next(iter(graphe.nodes))
 
-    # Utilisation du parcours en profondeur pour parcourir tous les nœuds accessibles
     visites = set()
 
     def parcours_profondeur(node):
@@ -20,7 +18,7 @@ def verifie_connexite(graphe):
     # Faire le parcours en profondeur depuis le premier nœud
     parcours_profondeur(depart_node)
 
-    # Si tous les nœuds ont été visités, le graphe est connexe
+    # Si toutes les stations ont été visités, le graphe est connexe
     return len(visites) == len(graphe.nodes)
 
 def ajoute_liaisons_manquantes(graphe, stations, liaisons):
@@ -29,12 +27,10 @@ def ajoute_liaisons_manquantes(graphe, stations, liaisons):
         return graphe
 
     # Si le graphe n'est pas connexe, on ajoute des arêtes manquantes
-    # On peut ajouter des arêtes entre stations non connectées
-    # Exemple : on ajoute une arête entre des stations choisies pour rendre le graphe connexe
     for x in stations:
         for y in stations:
             if not graphe.has_edge(x, y):
-                graphe.add_edge(x, y, weight=20)  # ajoute une arête avec un temps de 20s
+                graphe.add_edge(x, y, weight=20)  # temps de 20 secondes
     return graphe
 
 def construire_graphe(stations, liaisons):
@@ -48,15 +44,13 @@ def construire_graphe(stations, liaisons):
 
 def bellman_ford(graphe, depart, arrivee):
     """Calcule le plus court chemin entre source et target avec l'algorithme de Bellman-Ford."""
-    # Initialisation des distances
     distances = {node: float('inf') for node in graphe.nodes}
     distances[depart] = 0  # la distance du nœud départ à lui-même vaut 0
-    predecesseurs = {node: None for node in graphe.nodes}  # Pour reconstruire le chemin
+    predecesseurs = {node: None for node in graphe.nodes}
 
-    # Étape 1 : Relaxation des arêtes, N-1 fois (N est le nombre de nœuds)
     for _ in range(len(graphe.nodes) - 1):
         for x, y, data in graphe.edges(data=True):
-            temps = data['weight']  # Poids de l'arête, le temps
+            temps = data['weight']  # Poids de l'arête ici le temps
             if distances[x] + temps < distances[y]:
                 distances[y] = distances[x] + temps
                 predecesseurs[y] = x
@@ -64,7 +58,7 @@ def bellman_ford(graphe, depart, arrivee):
                 distances[x] = distances[y] + temps
                 predecesseurs[x] = y
 
-    # Vérification des cycles de poids négatifs
+    # Cycles de poids négatifs
     for x, y, data in graphe.edges(data=True):
         temps = data['weight']
         if distances[x] + temps < distances[y]:
@@ -72,16 +66,16 @@ def bellman_ford(graphe, depart, arrivee):
         if distances[y] + temps < distances[x]:
             raise ValueError("Le graphe contient un cycle de poids négatif")
 
-    # Étape 2 : Reconstruction du chemin le plus court
+    # on reconstruit le chemin le plus court
     chemin = []
     node_actuel = arrivee
     while node_actuel is not None:
         chemin.append(node_actuel)
         node_actuel = predecesseurs[node_actuel]
 
-    chemin.reverse()  # Inverser le chemin pour obtenir la direction correcte
+    chemin.reverse()
 
-    # Si la distance au nœud d'arrivée est infinie, il n'y a pas de chemin
+    # Pas de chemin si la distance au nœud d'arrivée est infinie
     if distances[arrivee] == float('inf'):
         return None, None
 
@@ -97,34 +91,32 @@ def prim(graphe):
     """
     from heapq import heappop, heappush
 
-    acpm = nx.Graph()  # Graphe pour stocker l'ACPM
-    visites = set()  # Ensemble des nœuds visités
-    liaisons = []  # Min-heap pour gérer les arêtes
+    acpm = nx.Graph()
+    visites = set()
+    liaisons = []
 
-    # Choisir un nœud de départ
     start_node = next(iter(graphe.nodes))
     visites.add(start_node)
 
-    # Ajouter les arêtes du nœud de départ dans le tas
+    # On ajoute les liaisons de la station de départ
     for neighbor, attributes in graphe[start_node].items():
         heappush(liaisons, (attributes['weight'], start_node, neighbor))
 
-    total_weight = 0  # Initialiser le poids total de l'ACPM
+    total_temps = 0
 
     while liaisons:
-        weight, x, y = heappop(liaisons)  # Extraire l'arête de poids minimum
+        temps, x, y = heappop(liaisons)  # arête de poid minimum
         if y not in visites:
-            # Ajouter l'arête à l'ACPM
-            acpm.add_edge(x, y, weight=weight)
+            acpm.add_edge(x, y, weight=temps)
             visites.add(y)
-            total_weight += weight  # Ajouter le poids de l'arête au total
+            total_temps += temps
 
-            # Ajouter les nouvelles arêtes accessibles depuis y
+            # On ajoute les nouvelles arêtes accessibles depuis la station y
             for neighbor, attributes in graphe[y].items():
                 if neighbor not in visites:
                     heappush(liaisons, (attributes['weight'], y, neighbor))
 
-    return acpm, total_weight
+    return acpm, total_temps
 
 
 def format_temps(minutes_float):

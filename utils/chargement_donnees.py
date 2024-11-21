@@ -19,22 +19,22 @@ def recup_stations(chemin_fichier):
 
                 terminus_parts = terminus_part.split()
                 est_terminus = terminus_parts[0].lower() == 'true'
-                direction_numero = int(terminus_parts[1])  # 0, 1, 2... pour le branchement
-                terminus_nom = terminus_parts[2] if len(terminus_parts) > 2 else None  # Nom du terminus si spécifié
+                direction_numero = int(terminus_parts[1])
+                terminus_nom = terminus_parts[2] if len(terminus_parts) > 2 else None
 
-                # Stocker les terminus pour chaque ligne
+                # on garde les terminus pour chaque ligne
                 if est_terminus and ligne_numero not in terminus:
-                    terminus[ligne_numero] = [station_nom]  # Si c'est le premier terminus pour cette ligne
+                    terminus[ligne_numero] = [station_nom]
                 elif est_terminus:
-                    terminus[ligne_numero].append(station_nom)  # Si c'est le second terminus pour cette ligne
+                    terminus[ligne_numero].append(station_nom)
 
                 stations[station_numero] = {
                     'station_code': station_code,
                     'station_nom': station_nom,
-                    'ligne_numero': ligne_numero,  # Ligne conservée comme texte (peut être "7bis")
+                    'ligne_numero': ligne_numero,
                     'est_terminus': est_terminus,
                     'direction_numero': direction_numero,
-                    'terminus_nom': terminus_nom,  # Nom du terminus pour cette station
+                    'terminus_nom': terminus_nom,
                 }
             except Exception as e:
                 print(f"Erreur lors de l'analyse de la ligne : {ligne}\n{e}")
@@ -50,7 +50,7 @@ def recup_laisons(chemin_fichier):
                 parts = ligne.strip().split()
                 x = int(parts[1])
                 y = int(parts[2])
-                temps = int(parts[3])  # Temps en secondes
+                temps = int(parts[3])
                 laisons.append((x, y, temps))
     return laisons
 
