@@ -3,10 +3,22 @@ import streamlit as st
 import base64
 
 LIGNE_COULEURS = {
-    "1": "blue", "2": "green", "3": "red", "4": "violet", "5": "orange", "6": "pink",
-    "7": "brown", "8": "yellow", "9": "cyan", "10": "lime", "11": "gray", "12": "gold",
-    "13": "darkblue", "14": "darkred"
+    "1": "yellow",     
+    "2": "blue",
+    "3": "olive",
+    "4": "magenta",
+    "5": "orange",
+    "6": "lightgreen",
+    "7": "pink",
+    "8": "purple",
+    "9": "gold",
+    "10": "yellowgreen",
+    "11": "brown",
+    "12": "green",
+    "13": "turquoise",
+    "14": "darkviolet"
 }
+
 
 def plot_metro(graphe, stations, positions, chemin=None, titre="Carte du métro"):
     """
